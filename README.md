@@ -68,7 +68,7 @@ You should now see a toolbar icon and a menu entry under **Plugins → Snap Inte
 
 ## Usage
 
-1. In QGIS, load:
+1. In QGIS, load:![curve icon](icon.png)
    - A **polygon layer** (your boundary).
    - A **line layer** representing your road network.
 2. Select **exactly one polygon feature** in the polygon layer (this will be used as the search boundary).
