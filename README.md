@@ -1,7 +1,6 @@
 # SnapIntegrator (QGIS 3.x plugin)
 
 SnapIntegrator is a QGIS plugin for finding **unmerged road endpoints** inside a boundary polygon, based on a chosen attribute field in a road (line) layer.
-
 It helps you detect where two road segments meet geometrically but **do not share the same attribute value** (for example, different street names or different IDs), which often indicates topology or data-cleaning issues.
 
 ---
@@ -38,7 +37,7 @@ This makes it easy to spot potential **unmerged or inconsistent** roads.
    - If the values are equal, the endpoint is ignored.
    - If the values are **different**, the endpoint is considered a **candidate “unmerged” point**.
 5. Each candidate point is tested to ensure it lies **inside** the selected polygon:
-   - A small negative buffer (`-tolerance`) is used to avoid points lying exactly on the boundary.
+   - A small negative buffer (`tolerance`) is used to avoid points lying exactly on the boundary.
 6. All valid candidate points are written to a memory **point layer**, which is added to the current QGIS project.
 
 ---
@@ -77,7 +76,7 @@ You should now see a toolbar icon and a menu entry under **Plugins → Snap Inte
 4. In the dialog:
    - Choose your **polygon layer**.
    - Choose your **line (roads) layer**.
-   - Choose the **attribute field** from the road layer that you want to check (e.g. `road_id`, `name`).
+   - Choose the **attribute field** or you have the option not to choose it from the road layer that you want to check (e.g. `road_id`, `name`).
 5. Click **OK**.
 6. The plugin will:
    - Analyze endpoints inside the selected polygon.
@@ -103,8 +102,17 @@ You can then inspect those points, label them with `val1` and `val2`, or use the
 
 ---
 
+## Support and Contribution
+- **Homepage**: [https://github.com/Consortis-Geospatial],(https://github.com/Consortis-Geospatial)
+- **Author**: Dimitra Pappa -Consortis Geospatial
+- **email**: pappa@consortis.gr
+- **Repository**: [https://github.com/Consortis-Geospatial/SnapIntegrator],(https://github.com/Consortis-Geospatial/SnapIntegrator)
+- **Issues Tracker**: [https://github.com/Consortis-Geospatial/SnapIntegrator],(https://github.com/Consortis-Geospatial/SnapIntegrator)
+
+---- 
+
 ## License
 
 This project is released under the **GNU General Public License v3**.
 
-You are free to use, modify, and distribute it under the terms of that license.
+
