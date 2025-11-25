@@ -226,7 +226,7 @@ class SnapIntegrator:
             dialog.close()
             return
 
-        prov.addFeatures(new_feats) 
+        prov.addFeatures(new_feats)
         result_layer.updateExtents()
         QgsProject.instance().addMapLayer(result_layer)
 
