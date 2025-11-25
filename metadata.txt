@@ -1,0 +1,20 @@
+[general]
+name=SnapIntegrator
+qgisMinimumVersion=3.16
+qgisMaxinumVersion=3.99
+description=Finds two snapped lines in a road network that are not joined  within a selected polygon boundary
+about=snapIntegrator is a Qgis plugin that detects topological errors (snapping) in a road network.
+SnapIntegrator Analyzes from a selected boundary(ex.Different countries) and finds line segments that are snapped but in reality are not joined 
+or there aree differnet values from a specific field.
+Results are exported in a temporary point gpkg.
+version=1.0
+author= Dimitra Pappa-Consortis Geospatial
+email=pappa@consortis.gr
+homepage=https://github.com/Consortis-Geospatial
+tracker=https://github.com/Consortis-Geospatial/SnapIntegrator/issues
+repository=https://github.com/Consortis-Geospatial/SnapIntegrator.git
+category=Analysis
+icon=icon.png
+experimental=False
+deprecated=False
+tags=RoadNetwork,NetworkAnalysis,Topology,Lines,
