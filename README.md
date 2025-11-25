@@ -107,7 +107,7 @@ You can then inspect those points, label them with `val1` and `val2`, or use the
 - **Author**: Dimitra Pappa -Consortis Geospatial
 - **email**: pappa@consortis.gr
 - **Repository**: [https://github.com/Consortis-Geospatial/SnapIntegrator],(https://github.com/Consortis-Geospatial/SnapIntegrator)
-- **Issues Tracker**: [https://github.com/Consortis-Geospatial/SnapIntegrator],(https://github.com/Consortis-Geospatial/SnapIntegrator)
+- **Issues Tracker**: [https://github.com/Consortis-Geospatial/SnapIntegrator/issues],(https://github.com/Consortis-Geospatial/SnapIntegrator/issues)
 
 ---- 
 
