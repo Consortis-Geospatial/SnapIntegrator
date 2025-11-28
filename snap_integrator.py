@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from qgis.PyQt.QtWidgets import QAction, QDialog, QVBoxLayout, QLabel, QComboBox, QPushButton
+from qgis.PyQt.QtCore import Qt
+from qgis.PyQt.QtWidgets import QAction, QDialog, QVBoxLayout, QLabel, QComboBox, QPushButton, QProgressDialog
 from qgis.PyQt.QtGui import QIcon
-
 from qgis.core import (
     QgsProject,
     QgsGeometry,
@@ -103,7 +103,12 @@ class SnapIntegrator:
 
     def run(self):
         dialog = SnapIntegratorDialog()
-        dialog.ok_button.clicked.connect(lambda: self.process(dialog))
+
+        # IMPORTANT: OK just accepts the dialog
+        dialog.ok_button.clicked.connect(dialog.accept)
+        # When dialog is accepted, run process ONCE
+        dialog.accepted.connect(lambda: self.process(dialog))
+
         dialog.exec_()
 
     def process(self, dialog):
@@ -114,13 +119,6 @@ class SnapIntegrator:
                 "SnapIntegrator", "Please select both polygon and line layers."
             )
             return
-
-        if field_name is not None:
-            if line_layer.fields().indexOf(field_name) == -1:
-                self.iface.messageBar().pushWarning(
-                    "SnapIntegrator", f"Field '{field_name}' not found in line layer."
-                )
-                return
 
         selected_polys = poly_layer.selectedFeatures()
         if len(selected_polys) != 1:
@@ -136,36 +134,52 @@ class SnapIntegrator:
             )
             return
 
-        # Collect endpoints
+        # --------------- PROGRESS DIALOG (0–100%) ---------------
+        total_steps = line_layer.featureCount() + 1  # +1 for point creation
+        progress = QProgressDialog(
+            "Processing...", "Cancel", 0, total_steps, self.iface.mainWindow()
+        )
+        progress.setWindowTitle("Snap Integrator")
+        progress.setWindowModality(Qt.WindowModal)
+        progress.setMinimumDuration(0)
+        current_step = 0
+        # --------------------------------------------------------
+
+        # --------------- COLLECT ENDPOINTS ---------------
         endpoint_map = {}
+        feat_by_id = {}
+
         for feat in line_layer.getFeatures():
             geom = feat.geometry()
-            if geom is None or geom.isEmpty():
-                continue
+            if geom is not None and not geom.isEmpty():
+                feat_by_id[feat.id()] = feat
 
-            if geom.isMultipart():
-                parts = geom.asMultiPolyline()
-            else:
-                parts = [geom.asPolyline()]
+                parts = geom.asMultiPolyline() if geom.isMultipart() else [geom.asPolyline()]
+                for part in parts:
+                    if len(part) < 2:
+                        continue
+                    # skip closed lines
+                    if part[0].x() == part[-1].x() and part[0].y() == part[-1].y():
+                        continue
+                    start_pt = (round(part[0].x(), 6), round(part[0].y(), 6))
+                    end_pt = (round(part[-1].x(), 6), round(part[-1].y(), 6))
+                    for pt in (start_pt, end_pt):
+                        endpoint_map.setdefault(pt, set()).add(feat.id())
 
-            for part in parts:
-                if len(part) < 2:
-                    continue
-                if part[0].x() == part[-1].x() and part[0].y() == part[-1].y():
-                    continue
-                start_pt = (round(part[0].x(), 6), round(part[0].y(), 6))
-                end_pt = (round(part[-1].x(), 6), round(part[-1].y(), 6))
-                for pt in (start_pt, end_pt):
-                    endpoint_map.setdefault(pt, set()).add(feat.id())
+            # update progress per feature
+            current_step += 1
+            progress.setValue(current_step)
+            if progress.wasCanceled():
+                progress.close()
+                self.iface.messageBar().pushWarning("SnapIntegrator", "Operation canceled by user.")
+                return
 
-        feat_by_id = {f.id(): f for f in line_layer.getFeatures()}
+        # --------------- CREATE POINTS ---------------
         tolerance = 0.0001
-
         crs = line_layer.crs().authid()
-        result_layer = QgsVectorLayer("Point?crs={}".format(crs), "SnapIntegrator_Points", "memory")
+        result_layer = QgsVectorLayer(f"Point?crs={crs}", "SnapIntegrator_Points", "memory")
         prov = result_layer.dataProvider()
 
-        # Attributes
         fields = [QgsField("id", QVariant.Int)]
         if field_name is not None:
             fields.extend([
@@ -186,7 +200,7 @@ class SnapIntegrator:
             fid1, fid2 = list(fids)
             feat1 = feat_by_id.get(fid1)
             feat2 = feat_by_id.get(fid2)
-            if feat1 is None or feat2 is None:
+            if not feat1 or not feat2:
                 continue
 
             if field_name is not None:
@@ -209,7 +223,6 @@ class SnapIntegrator:
             new_feat = QgsFeature(result_layer.fields())
             new_feat.setGeometry(pt_geom)
             new_feat["id"] = idx
-
             if field_name is not None:
                 new_feat["field"] = field_name
                 new_feat["val1"] = str(val1)
@@ -218,21 +231,23 @@ class SnapIntegrator:
             new_feats.append(new_feat)
             idx += 1
 
+        # Final step → 100%
+        current_step += 1
+        progress.setValue(current_step)
+        progress.close()
+
         if not new_feats:
             msg = "No candidate endpoints found inside the selected polygon."
             if field_name is not None:
                 msg += " (with differing field values)."
             self.iface.messageBar().pushInfo("SnapIntegrator", msg)
-            dialog.close()
             return
 
         prov.addFeatures(new_feats)
         result_layer.updateExtents()
         QgsProject.instance().addMapLayer(result_layer)
 
-        msg = "Exported {} candidate point(s)".format(len(new_feats))
+        msg = f"Exported {len(new_feats)} candidate point(s)"
         if field_name is not None:
-            msg += " (with differing values in '{}')".format(field_name)
+            msg += f" (with differing values in '{field_name}')"
         self.iface.messageBar().pushSuccess("SnapIntegrator", msg)
-
-        dialog.close()
