@@ -29,17 +29,17 @@ This makes it easy to spot potential **unmerged or inconsistent** roads.
 ## New Advanced Features
 
 -  Optional **Boundary Filtering**:
-  -  Use the checkbox **Use Selected Boundary Filter**
-- Multiple Comparison filter modes:
+  -  `Use the checkbox **Use Selected Boundary Filter**`
+-Multiple Comparison filter modes:
  - `All shared endpoints`
  - `Different in selected fields`
  - `Same values in selected  fields`
  - `Same values in ALL fields`
  - `All endpoints except differences in excluded fields`
-- Multi-field comparison support:
- - Select multiple fields simultaneously for comparison.
+-  Multi-field comparison support:
+ - `Select multiple fields simultaneously for comparison`
 - Exclusion-field filtering
- - Exclude candidate endpoints if selected fields contain different values.
+ - `Exclude candidate endpoints if selected fields contain different values.`
 - Detailed output attributes:
   - `diff_fields`
   - `same_fields`
@@ -48,7 +48,7 @@ This makes it easy to spot potential **unmerged or inconsistent** roads.
   - `excluded_diff`
   - `excluded_values`
 - Detects potential split road segments
- - Helps identify endpoints where connected lines have identical attributes and may not need to remain split.
+ - `Helps identify endpoints where connected lines have identical attributes and may not need to remain split.`
 
 ## How it works
 
