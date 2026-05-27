@@ -29,7 +29,7 @@ This makes it easy to spot potential **unmerged or inconsistent** roads.
 ## New Advanced Features
 
 -  Optional **Boundary Filtering**:
-  -  `Use the checkbox **Use Selected Boundary Filter**`
+  -  `Use the checkbox Use Selected Boundary Filter`
 - Multiple Comparison filter modes:
  - `All shared endpoints`
  - `Different in selected fields`
