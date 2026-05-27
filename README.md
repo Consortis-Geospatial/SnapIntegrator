@@ -35,7 +35,7 @@ Multiple Comparison filter modes:
 -**Different in selected fields**
 -**Same values in selected  fields**
 -**Same values in ALL fields**
-- **All endpoints except differences in excluded fields**
+-**All endpoints except differences in excluded fields**
 
 
 -Multi-field comparison support
