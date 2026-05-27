@@ -7,7 +7,7 @@ about=snapIntegrator is a Qgis plugin that detects topological errors (snapping)
 SnapIntegrator Analyzes from a selected boundary(ex.Different countries) and finds line segments that are snapped but in reality are not joined 
 or there aree differnet values from a specific field.
 Results are exported in a temporary point gpkg.
-version=1.0
+version=1.1
 author= Dimitra Pappa-Consortis Geospatial
 email=pappa@consortis.gr
 homepage=https://github.com/Consortis-Geospatial
