@@ -26,6 +26,35 @@ It helps you detect where two road segments meet geometrically but **do not shar
 This makes it easy to spot potential **unmerged or inconsistent** roads.
 
 ---
+## New Advanced Features
+-Optional **Boundary Filtering **
+- Use the checkbox **Use Selected Boundary Filter**
+
+Multiple Comparison filter modes:
+-**All shared endpoints**
+-**Different in selected fields**
+-**Same values in selected  fields**
+-**Same values in ALL fields**
+- **All endpoints except differences in excluded fields**
+
+
+-Multi-field comparison support
+ -Select multiple fields simultaneously for comparison.
+
+
+- Exclusion-field filtering
+  - Exclude candidate endpoints if selected fields contain different values.
+
+- Detailed output attributes:
+  - `diff_fields`
+  - `same_fields`
+  - `diff_values`
+  - `same_values`
+  - `excluded_diff`
+  - `excluded_values`
+
+- Detects potential split road segments
+  - Helps identify endpoints where connected lines have identical attributes and may not need to remain split.
 
 ## How it works
 
@@ -69,22 +98,45 @@ You should now see a toolbar icon and a menu entry under **Plugins → Snap Inte
 ## Usage
 
 1. In QGIS, load:![curve icon](icon.png)
-   - A **polygon layer** (your boundary).
+   - A **polygon layer**  (otional boundary).
    - A **line layer** representing your road network.
 2. Select **exactly one polygon feature** in the polygon layer (this will be used as the search boundary).
 3. Click the **SnapIntegrator** toolbar button (or use the Plugins menu).
 4. In the dialog:
    - Choose your **polygon layer**.
    - Choose your **line (roads) layer**.
-   - Choose the **attribute field** or you have the option not to choose it from the road layer that you want to check (e.g. `road_id`, `name`).
+    - Choose one or multiple **fields to compare** from the road layer.
+   - Optionally choose **fields to exclude** from the output filtering.
+   - Choose a **filter mode**:
+     - `All shared endpoints`
+     - `Different in selected fields`
+     - `Same values in selected fields`
+     - `Same values in ALL fields`
+     - `All endpoints except differences in excluded fields`
+
 5. Click **OK**.
 6. The plugin will:
-   - Analyze endpoints inside the selected polygon.
+   - Analyze shared endpoints between line features.
+   - Compare attribute values between connected features.
+   - Optionally apply boundary filtering.
    - Create a new memory layer named **`SnapIntegrator_Points`** with the candidate points.
 
-You can then inspect those points, label them with `val1` and `val2`, or use them for further topology checks.
+The exported layer includes:
+- `fid1`
+- `fid2`
+- `diff_fields`
+- `same_fields`
+- `diff_values`
+- `same_values`
+- `excluded_diff`
+- `excluded_values`
 
----
+You can then inspect those points to identify:
+- non-merged roads
+- unnecessary split lines
+- snapped segments with identical attributes
+- topology inconsistencies
+- attribute differences between connected segments
 
 ## Configuration & Notes
 
