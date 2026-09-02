@@ -149,11 +149,11 @@ You can then inspect those points to identify:
 ---
 
 ## Support and Contribution
-- **Homepage**: [https://github.com/Consortis-Geospatial],(https://github.com/Consortis-Geospatial)
-- **Author**: Dimitra Pappa -Consortis Geospatial
-- **email**: pappa@consortis.gr
-- **Repository**: [https://github.com/Consortis-Geospatial/SnapIntegrator],(https://github.com/Consortis-Geospatial/SnapIntegrator)
-- **Issues Tracker**: [https://github.com/Consortis-Geospatial/SnapIntegrator/issues],(https://github.com/Consortis-Geospatial/SnapIntegrator/issues)
+- **Homepage**: (https://github.com/demetrapappa14-geospatial/SnapIntegrator)
+- **Author**: Dimitra Pappa 
+- **email**: demetrapappa14@gmail.com
+- **Repository**: [[https://github.com/Consortis-Geospatial/SnapIntegrator](https://[github.com/demetrapappa14-geospatial/SnapIntegrator],(https://github.com/demetrapappa14-geospatial/SnapIntegrator)
+- **Issues Tracker**: [(https://github.com/demetrapappa14-geospatial/SnapIntegrator/issues],(https://github.com/demetrapappa14-geospatial/SnapIntegrator)
 
 ---- 
 
